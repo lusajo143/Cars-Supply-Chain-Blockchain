@@ -11,6 +11,7 @@
     "license": "Apache-2.0",
     "dependencies": {
         "fabric-ca-client": "^2.2.4",
-        "fabric-network": "^2.2.4"
+        "fabric-network": "^2.2.4",
+        "http": "^0.0.1-security"
     }
 }
