@@ -8,6 +8,8 @@ const FabricCAServices = require('fabric-ca-client');
 const path = require('path');
 const { buildCAClient, registerAndEnrollUser, enrollAdmin } = require('../../test-application/javascript/CAUtil.js');
 const { buildCCPOrg1, buildWallet } = require('../../test-application/javascript/AppUtil.js');
+const { count } = require('console');
+const { url } = require('inspector');
 
 const channelName = 'mychannel';
 const chaincodeName = 'basic';
@@ -36,18 +38,67 @@ function decodePost(data) {
     return JSON.stringify(json);
 }
 
+async function addOEM(res,ID, counts, image, country, hq, website) {
+    const ccp = buildCCPOrg1();
+    
+    const gateway = new Gateway();
+
+    const wallet = await Wallets.newFileSystemWallet(walletPath);
+
+    try {
+        // setup the gateway instance
+        // The user will now be able to create connections to the fabric network and be able to
+        // submit transactions and query. All transactions submitted by this gateway will be
+        // signed by this user using the credentials stored in the wallet.
+        await gateway.connect(ccp, {
+            wallet,
+            identity: org1UserId,
+            discovery: { enabled: true, asLocalhost: true } // using asLocalhost as this gateway is using a fabric network deployed locally
+        });
+
+        // Build a network instance based on the channel where the smart contract is deployed
+        const network = await gateway.getNetwork(channelName);
+
+        // Get the contract from the network.
+        const contract = network.getContract(chaincodeName);
+
+        console.log('\n--> Add transaction ___________');
+        const result = await contract.submitTransaction('addOEM', ID, counts, image, country, website,hq);
+        console.log('*** Result 12233: committed');
+        
+        res.writeHead(200, {'Content-Type':'application/json'})
+        res.write(result.toString());
+        res.end();
+        
+    } catch (error){
+        console.error(error);
+    }
+}
+
 
 async function main() {
 	try {
 		
             let server = http.createServer(async function(req, res){
                 if (req.method == "GET") {
-                    if ('/') {
-                        fs.readFile('home.htm', function(err, data) {
-                            res.writeHead(200, {'Content-Type': 'text/html'});
+                    if (req.url === '/') {
+                        fs.readFile('web/index.htm', function(err, data) {
+                            res.writeHead(200, {'Content-Type':'text/html'});
                             res.write(data);
-                            return res.end();
-                          });
+                            res.end();
+                        });
+                    } else if (req.url == '/get-started') {
+                        fs.readFile('web/get-started.htm', function(err, data) {
+                            res.writeHead(200, {'Content-Type':'text/html'});
+                            res.write(data);
+                            res.end();
+                        });
+                    } else if (req.url == '/web/owner') {
+                        fs.readFile('web/owner.htm', function(err, data) {
+                            res.writeHead(200, {'Content-Type':'text/html'});
+                            res.write(data);
+                            res.end();
+                        });
                     } else if (req.url === '/register') {
                         // build an in memory object with the network configuration (also known as a connection profile)
                         const ccp = buildCCPOrg1();
@@ -99,41 +150,21 @@ async function main() {
     
                         }
                     } else if (req.url === '/add') {
-                        const ccp = buildCCPOrg1();
-    
-                        const gateway = new Gateway();
-    
-                        const wallet = await Wallets.newFileSystemWallet(walletPath);
-    
-                        try {
-                            // setup the gateway instance
-                            // The user will now be able to create connections to the fabric network and be able to
-                            // submit transactions and query. All transactions submitted by this gateway will be
-                            // signed by this user using the credentials stored in the wallet.
-                            await gateway.connect(ccp, {
-                                wallet,
-                                identity: org1UserId,
-                                discovery: { enabled: true, asLocalhost: true } // using asLocalhost as this gateway is using a fabric network deployed locally
-                            });
-    
-                            // Build a network instance based on the channel where the smart contract is deployed
-                            const network = await gateway.getNetwork(channelName);
-    
-                            // Get the contract from the network.
-                            const contract = network.getContract(chaincodeName);
-    
-                            console.log('\n--> Add transaction ___________');
-                            const result = await contract.submitTransaction('addOEM', 'BMW', "0", 'images/bmw.jpg', 'Tanzania', 'https://www.bmw.org','Dodoma');
-                            console.log('*** Result 12233: committed');
-                            if (`${result}` !== '') {
-                                console.log(`*** Result: ${prettyJSONString(result.toString())}`);
-                            }
-                            res.writeHead(200, {'Content-Type':'application/json'});
-                            res.write(result.toString());
-                            res.end();
-                    } catch (error){
-                        console.error(error);
-                    }
+                        // dat = [
+                        //     {
+                        //         'name':'lusajo'
+                        //     },
+                        //     {
+                        //         'name':'menard'
+                        //     }
+                        // ];
+                        dat = {
+                            'title':'lusajo'
+                        };
+                        res.writeHead(200, {'Content-Type':'application/json'});
+                        res.write(JSON.stringify(dat));
+                        res.end();
+
                     } else if (req.url === '/get') {
                         const ccp = buildCCPOrg1();
     
@@ -170,18 +201,52 @@ async function main() {
                         } catch (error){
                             console.error(error);
                         }
+                    } else if (req.url == '/pic/car1') {
+                        fs.readFile('web/assets/car1.jpg', function(err, data){
+                            res.writeHead(200, {'Content-Type':'image/jpeg'});
+                            res.end(data);
+                        });
+                    } else if (req.url == '/pic/oems') {
+                        fs.readFile('web/assets/oems.jpg', function(err, data){
+                            res.writeHead(200, {'Content-Type':'image/jpeg'});
+                            res.end(data);
+                        });
+                    } else if (req.url == '/pic/owner') {
+                        fs.readFile('web/assets/owner.jpg', function(err, data){
+                            res.writeHead(200, {'Content-Type':'image/jpeg'});
+                            res.end(data);
+                        });
+                    } else if (req.url == '/pic/cowner') {
+                        fs.readFile('web/assets/cowner.jpg', function(err, data){
+                            res.writeHead(200, {'Content-Type':'image/jpeg'});
+                            res.end(data);
+                        });
+                    } else if (req.url == '/pic/transporter') {
+                        fs.readFile('web/assets/transport.jpg', function(err, data){
+                            res.writeHead(200, {'Content-Type':'image/jpeg'});
+                            res.end(data);
+                        });
+                    } else if (req.url == '/pic/factory') {
+                        fs.readFile('web/assets/factory.jpg', function(err, data){
+                            res.writeHead(200, {'Content-Type':'image/jpeg'});
+                            res.end(data);
+                        });
                     }
                 } else if (req.method == 'POST') {
-                    if (req.url === '/gett') {
+                    if (req.url === '/addOEM') {
                         var body = '';
                         req.on('data', function (data){
                             body += data;
                             body = JSON.parse(decodePost(body));
+                            // console.log(body);
+                            
                         });
                         
-                        console.log(body);
+                        req.on('end', function() {
 
-                        res.end();
+                            result = addOEM(res,body.ID, body.counts, body.image, body.country, body.hq, body.website);
+
+                        });
                     }
                 }
             });

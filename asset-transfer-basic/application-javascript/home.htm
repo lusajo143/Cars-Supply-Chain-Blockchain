@@ -5,21 +5,96 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cars Supply Chain</title>
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .header {
+            background-color: teal;
+            height: auto;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+        .header a {
+            display: inline;
+            color: white;
+            padding: 20px;
+            text-decoration: none;
+        }
+        .header a:hover {
+            background-color: rgb(0, 61, 61);
+            cursor: pointer;
+        }
+        .down {
+            display: flex;
+            flex-direction: row;
+        }
+        .left a {
+            display: block;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-right: 30px;
+            padding-left: 30px;
+        }
+        .left {
+            margin-top: 10px;
+        }
+        .left a:hover {
+            background-color: rgb(0, 61, 61);
+            color: white;
+            cursor: pointer;
+        }
+        .right {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+
 </head>
 <body>
 
     <div class="header">
-        <h3>Cars Supply Chain</h3>
+        <a href="http:127.0.0.1:5000">Home</a>
+        <a href="">About</a>
+    </div>
+    
+
+    <div class="down">
+        <div class="left">
+            <a>Add Car</a>
+            <a>Add OEMs</a>
+            <a href="http:127.0.0.1:5000/web/get">View OEM</a>
+            <a>View Car</a>
+        </div>
+        <div class="right" >
+            
+
+            <span><b>Add OEM</b></span>
+
+            <form action="/addOEM" method="post">
+            <label for="ID">ID</label><br>
+            <input type="text" name="ID" id="ID" class="input" placeholder="ID"> <br><br>
+            <label for="counts">Counts</label><br>
+            <input type="text" name="counts" id="counts" placeholder="Counts"><br><br>
+            <label for="image">Image</label><br>
+            <input type="text" name="image" id="image" placeholder="Image"><br><br>
+            <label for="country">Choose Country</label><br>
+            <select name="country" id="country">
+                <option value="Tanzania">Tanzania</option>
+                <option value="Germany">Germany</option>
+            </select><br><br>
+            <label for="hq">HeadQuarters</label><br>
+            <input type="text" name="hq" id="hq" placeholder="HeadQuarters"><br><br>
+            <label for="website">Website</label><br>
+            <input type="text" name="website" id="website" placeholder="Website"><br><br>
+            <input type="submit" value="Add OEM">
+            </form>
+        </div>
     </div>
 
-    <form action="/gett" method="post">
     
-    <input type="text" name="ID" id="ID">
-    <label for="ID">ID:</label>
-    <input type="text" name="Name" id="Name">
-    <input type="submit" value="Get">
-    </form>
     
 </body>
 </html>
