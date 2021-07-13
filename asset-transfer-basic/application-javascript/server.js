@@ -93,8 +93,8 @@ async function main() {
                             res.write(data);
                             res.end();
                         });
-                    } else if (req.url == '/web/owner') {
-                        fs.readFile('web/owner.htm', function(err, data) {
+                    } else if (req.url == '/web/sign-up') {
+                        fs.readFile('web/sign-up.htm', function(err, data) {
                             res.writeHead(200, {'Content-Type':'text/html'});
                             res.write(data);
                             res.end();
@@ -247,6 +247,25 @@ async function main() {
                             result = addOEM(res,body.ID, body.counts, body.image, body.country, body.hq, body.website);
 
                         });
+                    } else if (req.url == "/web/action/sign-up") {
+                        var body = '';
+                        req.on('data', function (data){
+                            body += data;
+                            body = JSON.parse(decodePost(body));
+                            console.log('reo '+body.Username);
+                        });
+
+                        req.on('end', function(){
+                            
+                            res.writeHead(200, {'Content-Type':'application/json'});
+                            res.write(JSON.stringify(body));
+                            res.end();
+                            console.log(body.Username+" ls");
+                        });
+
+                        
+                        
+                        
                     }
                 }
             });
