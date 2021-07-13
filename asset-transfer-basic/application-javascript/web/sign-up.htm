@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Cars Supply Chain</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
+    </style>
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .top {
+            background-color: teal;
+            color: white;
+            font-weight: bold;
+        }
+        .nav .nav-item a {
+            text-decoration: none;
+            color: white;
+        }
+        h4 {
+            font-weight: bold;
+            font-size: 50px;
+            text-align: right;
+            margin-top: 10%;
+            color: white;
+        }
+        .input {
+            width: 60%;
+            margin-bottom: 1em;
+        }
+        label {
+            color: white;
+            font-weight: bold;
+        }
+        .left {
+            background-image: url("http://127.0.0.1:5000/pic/car1");
+            background-repeat: no-repeat;
+            background-position: left center;
+            background-size: cover;
+        }
+    </style>
+
+</head>
+<body>
+    
+    <div class="container-fluid">
+
+        <div class="row" style="margin-top: 8em;">
+            <center>
+                <div class="col-md-8 center-container">
+                    <div class="row">
+                        <div class="col-md-6 left">
+                            <h4>Cars Supply Chain</h4>
+                        </div>
+                        <div class="col-md-6" style="background-color: teal;">
+                            <form method="POST" action="action/sign-up" class="needs-validation">
+                                <h4 class="text-center">Sign Up</h4>
+                                <div class="input-group input">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"> <i class="bi-person-fill"></i> </div>
+                                    </div>
+                                    <input type="text" name="Username" class="form-control input" placeholder="Username" required>
+                                </div>
+                                <div class="input-group input">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"> <i class="bi-lock-fill"></i> </div>
+                                    </div>
+                                    <input type="password" name="Password" class="form-control input" placeholder="Password" required>
+                                </div>
+
+                                <h6 style="color: white; font-weight: bold;">Select type of account to open?</h6>
+
+                                <div class="row" style="width: 80%;">
+                                    <div class="col">
+                                        <div class="custom-radio custom-control custom-control-inline">
+                                            <input type="radio" value="CarOwner" name="type" id="owner" class="custom-radio" checked>
+                                            <label for="owner" class="custom-control-label">Car Onwer</label>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="col">
+                                        <div class="custom-radio custom-control custom-control-inline">
+                                            <input type="radio" value="Transporter" name="type" id="trans" class="custom-radio">
+                                            <label for="trans" class="custom-control-label">Transporter</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="custom-radio custom-control custom-control-inline">
+                                    <input type="radio" name="type" value="OEM" class="custom-radio" id="oem">
+                                    <label for="oem" class="custom-control-label">OEM</label>
+                                </div>
+
+                                <button class="btn btn-primary" style="background-color: white; color: teal; font-weight: bold; margin-bottom: 1em; margin-top: 1em;">Sing Up</button>
+
+                            </form>
+                            <div class="row" style="margin-bottom: 1em;">
+                                <div class="col-md-12">
+                                    <a href="http://127.0.0.1:5000" style="color: white; text-decoration: none; font-weight: bold;">Return Home</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </center>
+        </div>
+    </div>
+
+
+</body>
+</html>
