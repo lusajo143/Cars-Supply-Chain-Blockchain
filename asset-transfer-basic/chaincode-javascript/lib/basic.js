@@ -91,12 +91,104 @@ class basic extends Contract {
             }
         ];
 
+        const cars = [
+            {
+                ID: 'car1',
+                OEM: 'Toyota',
+                Model: 'Mark II Grand',
+                Year: 2007,
+                Status: 'Not owned',
+                Country: 'Japan'
+            },
+            {
+                ID: 'car2',
+                OEM: 'Volvo',
+                Model: 'C 40',
+                Year: 2020,
+                Status: 'Not owned',
+                Country: 'Germany'
+            },
+            {
+                ID: 'car3',
+                OEM: 'Toyota',
+                Model: 'Mark II Grand',
+                Year: 2007,
+                Status: 'Not owned',
+                Country: 'Japan'
+            },
+            {
+                ID: 'car4',
+                OEM: 'Toyota',
+                Model: 'Mark II Grand',
+                Year: 2007,
+                Status: 'Not owned',
+                Country: 'Japan'
+            }
+        ];
+
         for (const _oem of _oems) {
             _oem.docType = '_oem';
             await ctx.stub.putState(_oem.ID, Buffer.from(JSON.stringify(_oem)));
             console.log('${_oem.ID} was initialized');
         }
+
+        for (const _car of cars) {
+            _car.docType = '_car';
+            await ctx.stub.putState(_car.ID, Buffer.from(JSON.stringify(_car)));
+            console.log('${_car.ID} was inititialized');
+        }
+
+        // Add Admin user
+        const _admin = {
+            ID: 'admin',
+            Username: 'Lusajo',
+            Password: 'Menard'
+        }
+
+        await ctx.stub.putState(_admin.ID, Buffer.from(JSON.stringify(_admin)))
+        console.log("Added Admin user successfully...")
         
+    }
+
+    async authenticateAdmin(ctx, username, password) {
+        const _data = ctx.stub.getState('admin')
+
+        if (!_data || _data.length === 0) {
+            throw new Error("Failed to authenticate admin")
+        }
+
+        if (_data.Username === username && _data.Password === password)
+            return "true"
+        else
+            return "false"
+        
+    }
+
+    async addCar(ctx, id, oem, model, year, status, country) {
+        const _car = {
+            ID: id,
+            OEM: oem,
+            Model: model,
+            Year: year,
+            Status: status,
+            Country: country
+        }
+
+
+        await ctx.stub.putState(_car.ID, Buffer.from(JSON.stringify(_car)))
+
+        console.log('Added new car (${_car})')
+        return JSON.stringify(_car)
+    }
+
+    async getCar(ctx, id){
+        const carJson = await ctx.stub.getState(id)
+
+        if (!carJson || carJson.length === 0) {
+            throw new Error("Failed to get car")
+        }
+
+        return carJson.toString()
     }
 
     async addOEM(ctx, id, counts, image, country, website, hq) {
