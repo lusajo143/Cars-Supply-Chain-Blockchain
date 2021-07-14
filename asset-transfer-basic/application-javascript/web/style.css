@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
+
+h4 {
+    font-weight: bold;
+    font-size: 50px;
+    text-align: right;
+    margin-top: 10%;
+    color: white;
+}
+
+.h4-plain {
+    font-weight: bold;
+    font-size: 50px;
+    margin-top: 10%;
+}
+
+.left-l-h4 {
+    font-weight: bold;
+    font-size: 50px;
+    margin-top: 10%;
+    text-align: left;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+/* Navigation bar */
+.top {
+    background-color: teal;
+    color: white;
+    font-weight: bold;
+}
+
+
+.nav .nav-item .navbar-link {
+    text-decoration: none;
+    color: white;
+}
+
+.top-icon {
+    padding-left: 20px;
+    color: white;
+}
+.acc {
+    background-color: teal;
+}
+
+.left-text {
+    text-align: left;
+    font-size: 20px;
+}
+
+.right-text {
+    text-align: right;
+    font-size: 20px;
+}
+
+.right-h4 {
+    text-align: right;
+}
+
+.left-h4 {
+    text-align: left;
+}
+
+.partition {
+    margin-right: 5em;
+    margin-left: 5em;
+}
+
+.footer {
+    padding-right: 5em;
+    padding-left: 5em;
+    padding-top: 3em;
+    padding-bottom: 3em;
+    background-color: teal;
+    margin-top: 5em;
+    color: white;
+}
+.list-group .list-group-item {
+    background-color: teal;
+    color: white;
+}
+.list-group .list-group-item a {
+    color: white;
+    text-decoration: none;
+}
+.list-group .list-group-item:hover {
+    background-color: rgb(0, 77, 77);
+    color: white;
+}
+
+.fa {
+    font-size: 80px;
+}
+
+.h4-plainSmall {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.cards:hover {
+    background-color: whitesmoke;
+    border: 1px solid rgb(192, 192, 192);
+    border-radius: 5px;
+}
+
+.cards {
+    padding: 1em;
+}
+
+.cbtn {
+    background-color: teal;
+    color: white;
+}

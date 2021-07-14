@@ -13,15 +13,8 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
     </style>
+    <link rel="stylesheet" href="style.css">
     <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-        }
-        .top {
-            background-color: teal;
-            color: white;
-            font-weight: bold;
-        }
         .nav .nav-item a {
             color: white;
         }
@@ -35,41 +28,18 @@
             height: 450px;
         }
         .oem {
-            background-image: url('http://127.0.0.1:5000/pic/oems');
+            background-image: url('/assets/oems.jpg');
             background-position: center;
             background-size: cover;
             font-weight: bold;
         }
         .owner {
-            background-image: url('http://127.0.0.1:5000/pic/owner');
+            background-image: url('/assets/owner.jpg');
             background-position: center;
             background-size: cover;
             font-weight: bold;
         }
-        h4 {
-            font-weight: bold;
-            font-size: 50px;
-            text-align: right;
-            margin-top: 10%;
-        }
-        .right-h4 {
-            text-align: right;
-        }
-        .right-text {
-            text-align: right;
-            font-size: 20px;
-        }
-        .left-h4 {
-            text-align: left;
-        }
-        .left-text {
-            text-align: left;
-            font-size: 20px;
-        }
-        .partition {
-            margin-right: 5em;
-            margin-left: 5em;
-        }
+        
         .btn {
             background-color: teal;
             color: white;
@@ -78,27 +48,7 @@
         .btn-right {
             align-self: right;
         }
-        .footer {
-            padding-right: 5em;
-            padding-left: 5em;
-            padding-top: 3em;
-            padding-bottom: 3em;
-            background-color: teal;
-            margin-top: 5em;
-            color: white;
-        }
-        .list-group .list-group-item {
-            background-color: teal;
-            color: white;
-        }
-        .list-group .list-group-item a {
-            color: white;
-            text-decoration: none;
-        }
-        .list-group .list-group-item:hover {
-            background-color: rgb(0, 77, 77);
-            color: white;
-        }
+        
     </style>
 
 </head>
@@ -116,13 +66,13 @@
                         <a href="http://127.0.0.1:5000" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a href="http://127.0.0.1:5000/web/sign-in" class="nav-link">Sign In</a>
+                        <a href="/sign-in.htm" class="nav-link">Sign In</a>
                     </li>
                     <li class="nav-item">
-                        <a href="http://127.0.0.1:5000/web/sign-up" class="nav-link">Sign Up</a>
+                        <a href="/sign-up.htm" class="nav-link">Sign Up</a>
                     </li>
                     <li class="nav-item">
-                        <a href="http://127.0.0.1:5000/web/about" class="nav-link">About</a>
+                        <a href="/about.htm" class="nav-link">About</a>
                     </li>
                 </ul>
             </div>
@@ -165,7 +115,7 @@
             <center style="margin-top: 5em;"><h3>Main Participants</h3></center>
 
             <div class="row partition" style="margin-top: 5em;">
-                <div class="col-md-5" style="background-image: url('http://127.0.0.1:5000/pic/factory'); height: 350px; background-size: cover; background-repeat: no-repeat; background-position: center;">
+                <div class="col-md-5" style="background-image: url('/assets/factory.jpg'); height: 350px; background-size: cover; background-repeat: no-repeat; background-position: center;">
                 </div>
                 <div class="col-md-7">
                     <h4 class="right-h4">Original Equipment Manufacturers (OEMs)</h4>
@@ -188,13 +138,13 @@
                     </p>
                     <a href="" class="btn text-center">Register here</a>
                 </div>
-                <div class="col-md-5" style="background-image: url('http://127.0.0.1:5000/pic/transporter'); height: 350px; background-size: cover; background-repeat: no-repeat; background-position: center;">
+                <div class="col-md-5" style="background-image: url('/assets/transport.jpg'); height: 350px; background-size: cover; background-repeat: no-repeat; background-position: center;">
                 </div>
                 
             </div>
 
             <div class="row partition" style="margin-top: 3em;">
-                <div class="col-md-5" style="background-image: url('http://127.0.0.1:5000/pic/cowner'); height: 350px; background-size: cover; background-repeat: no-repeat; background-position: center;">
+                <div class="col-md-5" style="background-image: url('/assets/cowner.jpg'); height: 350px; background-size: cover; background-repeat: no-repeat; background-position: center;">
                 </div>
                 <div class="col-md-7">
                     <h4 class="right-h4">Car owners</h4>
@@ -202,7 +152,7 @@
                         from the system.
                     </p>
                     <div style="float: right;">
-                        <a href="http://127.0.0.1:5000/web/sign-up" class="btn">Register here</a>
+                        <a href="/sign-up.htm" class="btn">Register here</a>
                     </div>
                 </div>
             </div>
@@ -217,7 +167,7 @@
                 <h5 class="text-center" style="margin-top: 15%;">Powered by</h5>
                 <a href="http://techdealers.org" style="text-decoration: none; color: white;"><h4 class="text-center">Techdealers</h4></a>
             </div>
-            <div class="col-md-4" style="padding-left: 6em;">
+            <div class="col-md-4" >
                 <h5>Services</h5>
                 <ul class="list-group">
                     <li class="list-group-item"> <a href="#">OEMs Registration</a> </li>

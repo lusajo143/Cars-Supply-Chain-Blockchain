@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        .left {
+            margin-top: 5em;
+        }
+        .owner {
+            background-image: url("/assets/owner1.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 350px;
+        }
+    </style>
+
+</head>
+<body>
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 top fixed-top">
+                <div class="navbar navbar-extended-lg">
+                    <div class="navbar-brand">
+                        Cars Supply Chain
+                    </div>
+
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <div class="nav-item">
+                                <i class="bi-person-fill"></i>
+                                <span id="username"></span>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="navbar-link top-icon"><i class="bi-house-fill top-icon"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="navbar-link top-icon"> <i class="bi-gear-fill"></i> </a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 5em; ">
+            <center>
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h3 class="left-l-h4">Cars Supply Chain Solution</h3>
+                            <p class="left-text">Track, Buy and Sell Cars in a most secure and transparent way with Us. <br>
+                                </p>
+                            <p class="left-text">
+                                Do you have issues? <br>
+                                <a href="" style="background-color: teal; color: white;" class="btn"> <i class="bi-envelope-fill"></i> Contact Us</a>
+                            </p>
+                        </div>
+                        <div class="col-md-4 owner"></div>
+                    </div>
+                </div>
+            </center>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h3 class="h4-plain text-center">My Services</h3>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 3em;">
+            <center>
+                <div class="col-md-8" style="height: 200px;">
+                    <div class="row" id="services">
+                        <!-- Services layouts -->
+                    </div>
+                </div>
+            </center>
+        </div>
+        <div class="row footer">
+            <div class="col-md-3">
+                <h5 class="text-center" style="margin-top: 15%;">Powered by</h5>
+                <a href="http://techdealers.org" style="text-decoration: none; color: white;"><h4 class="text-center">Techdealers</h4></a>
+            </div>
+            <div class="col-md-4" style="padding-left: 6em;">
+                <h5>Services</h5>
+                <ul class="list-group">
+                    <li class="list-group-item"> <a href="#">OEMs Registration</a> </li>
+                    <li class="list-group-item"> <a href="#">Transporters Registration</a></li>
+                </ul>
+            </div>
+            <div class="col-md-5">
+
+                <div style="float: right;">
+                    <h5>Contact Us</h5>
+                    <ul class="list-group" style="background-color: teal;">
+                        <li class="list-group-item"> <i class="bi-envelope"></i> <a href="mailto:contact@techdealers.org">contact@techdealers.org</a></li>
+                        <li class="list-group-item"> <i class="bi-twitter" style="color: white;"></i> <a href="https://twitter.com/techdealers1">Techdealers</a></li>
+                        <li class="list-group-item"> <i class="bi-facebook" style="color: white;"></i> <a href="https://www.facebook.com/Techdealers143">Techdealers143</a></li>
+                        <li class="list-group-item"> <i class="bi-instagram" style="color: white;"></i> <a href="https://www.instagram.com/techdealers143/">techdealers143</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        var head = document.querySelector('#username')
+        var services = document.querySelector('#services')
+        head.innerHTML = "Loading..."
+
+        const resp = fetch('http://127.0.0.1:5000/head').then(
+            response => {
+                return response.json();
+            }
+        )
+        resp.then(data => {
+            head.innerHTML = data.name
+            fetchServices()
+        })
+
+        function fetchServices() {
+            fetch("http://127.0.0.1:5000/services_carOwner").then(
+                response => response.json()
+            ).then(
+                data => {
+                    data.forEach(element => {
+                        console.log(element.name)
+                        var div = document.createElement('div')
+                        div.classList.add('col-md-4')
+                        div.classList.add('cards')
+                        
+                        var heading = document.createElement('h3')
+                        heading.innerHTML = element.name
+                        heading.classList.add('h4-plainSmall')
+
+                        var p = document.createElement('p');
+                        p.innerHTML = element.details
+                        p.style.marginTop = "1em"
+
+                        var btn = document.createElement('span')
+                        btn.classList.add('btn')
+                        btn.classList.add('cbtn')
+
+                        btn.innerHTML = 'View'
+
+
+                        div.appendChild(heading)
+                        div.appendChild(p)
+                        div.appendChild(btn)
+
+                        services.appendChild(div)
+                    });
+                }
+            );
+        }
+    </script>
+</body>
+</html>

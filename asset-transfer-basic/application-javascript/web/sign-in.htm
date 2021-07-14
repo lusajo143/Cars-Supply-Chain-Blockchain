@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
+    </style>
+    <link rel="stylesheet" href="./style.css">
+
+    <style>
+        
+        
+        .input {
+            width: 60%;
+            margin-bottom: 1em;
+        }
+        label {
+            color: white;
+            font-weight: bold;
+        }
+        .left {
+            background-image: url("/assets/car1.jpg");
+            background-repeat: no-repeat;
+            background-position: left center;
+            background-size: cover;
+        }
+        .nav-item a {
+            color: white;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 fixed-top top">
+                <div class="navbar navbar-extended-lg">
+                <div class="navbar-brand">
+                    Cars Supply Chain
+                </div>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a href="http://127.0.0.1:5000" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/sign-in.htm" class="nav-link">Sign In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/sign-up.htm" class="nav-link">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/about.htm" class="nav-link">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 8em;">
+            <center>
+                <div class="col-md-8 center-container">
+                    <div class="row">
+                        <div class="col-md-6 left">
+                            <h4>Cars Supply Chain</h4>
+                            <h5 style="color: white; float: right; margin-top: 1em;">Better Quality with transparency</h5>
+                        </div>
+                        <div class="col-md-6" style="background-color: teal;">
+                            <form method="POST" action="/sign-inAdmin" class="needs-validation">
+                                <h4 class="text-center">Sign In</h4>
+                                <div class="input-group input">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"> <i class="bi-person-fill"></i> </div>
+                                    </div>
+                                    <input type="text" name="Username" class="form-control input" placeholder="Username" required>
+                                </div>
+                                <div class="input-group input">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"> <i class="bi-lock-fill"></i> </div>
+                                    </div>
+                                    <input type="password" name="Password" class="form-control input" placeholder="Password" required>
+                                </div>
+
+                                <h6 style="color: white; font-weight: bold;">Sign In As</h6>
+
+                                <div class="row" style="width: 80%;">
+                                    <div class="col">
+                                        <div class="custom-radio custom-control custom-control-inline">
+                                            <input type="radio" value="Admin" name="type" id="owner" class="custom-radio">
+                                            <label for="owner" class="custom-control-label">Admin</label>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="col">
+                                        <div class="custom-radio custom-control custom-control-inline">
+                                            <input type="radio" value="User" name="type" id="trans" class="custom-radio" checked>
+                                            <label for="trans" class="custom-control-label">User</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-primary" style="background-color: white; color: teal; font-weight: bold; margin-bottom: 1em; margin-top: 1em;">Sing In</button>
+
+                            </form>
+                            <div class="row" style="margin-bottom: 1em;">
+                                <div class="col-md-12">
+                                    <a href="http://127.0.0.1:5000" style="color: white; text-decoration: none; font-weight: bold;">Return Home</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </center>
+        </div>
+
+    </div>
+    
+</body>
+</html>
