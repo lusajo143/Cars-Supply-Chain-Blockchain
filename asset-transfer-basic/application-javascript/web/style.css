@@ -43,6 +43,11 @@ body {
     padding-left: 20px;
     color: white;
 }
+
+.top-icon-right {
+    color: white;
+    padding-right: 10px;
+}
 .acc {
     background-color: teal;
 }
@@ -114,4 +119,16 @@ body {
 .cbtn {
     background-color: teal;
     color: white;
+}
+
+.sign-out-btn {
+    margin-left: 10px;
+    background-color: rgb(117, 0, 0);
+    color: white;
+    font-weight: bold;
+}
+
+.sign-out-btn:hover {
+    color: white;
+    background-color: rgb(161, 1, 1);
 }

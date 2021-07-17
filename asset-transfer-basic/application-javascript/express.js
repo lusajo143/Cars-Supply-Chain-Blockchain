@@ -232,107 +232,6 @@ async function addOEM(res,ID, counts, image, country, hq, website) {
 
 // main();
 
-
-async function SignInAdmin(res, username, password) {
-    const ccp = buildCCPOrg1();
-    
-    const gateway = new Gateway();
-
-    const wallet = await Wallets.newFileSystemWallet(walletPath);
-
-    try {
-        
-        await gateway.connect(ccp, {
-            wallet,
-            identity: org1UserId,
-            discovery: { enabled: true, asLocalhost: true } // using asLocalhost as this gateway is using a fabric network deployed locally
-        });
-
-        // Build a network instance based on the channel where the smart contract is deployed
-        const network = await gateway.getNetwork(channelName);
-
-        // Get the contract from the network.
-        const contract = network.getContract(chaincodeName);
-
-        console.log('\n--> Signing In admin user');
-        const result = await contract.submitTransaction('authenticateAdmin', username, password);
-        console.log('*** Admin Sign In committed');
-        
-        if (result) {
-            console.log(result)
-            console.log(typeof(result))
-            res.send('Success')
-        } else {
-            res.send('Wrond Username or Password')
-        }
-        
-    } catch (error){
-        console.error(error);
-    }
-}
-
-
-
-var express = require('express')
-var session = require('express-session')
-
-var app = express();
-
-var web = '/web/';
-
-// Mount assets
-app.use(express.static('web/'));
-
-// Decode url
-app.use(express.urlencoded());
-
-// For handling sessions
-app.use(session({
-    secret: 'car-key',
-    resave: false,
-    saveUninitialized: false,
-}))
-
-app.set('json spaces', 40);
-
-
-app.get('/', function(req, res){
-    if (!req.session.username) {
-        res.sendFile(web+'index.htm',{root: __dirname});
-    } else {
-        res.sendFile(web+'owners/index.htm', {root: __dirname})
-    }
-});
-
-app.post('/sign-up', function(req, res, next) {
-    if (!req.session.username) {
-        req.session.username = 'lusajo'
-        res.sendFile(web+'owners/index.htm', {root: __dirname})
-    } else {
-        res.sendFile(web+'owners/index.htm', {root: __dirname})
-    }
-})
-
-app.get('/sign-in', function(req, res, next) {
-    res.sendFile(web+'sign-in.htm', {root: __dirname})
-})
-
-app.get('/head', function(req, res) {
-    res.json({'name':'lusajo menard'});
-})
-
-app.get('/services_carOwner', function(req, res){
-    if (!req.session.username) {
-        res.sendFile(web+'index.htm',{root: __dirname});
-    } else {
-        res.json([
-            {'id':1,'name':'View My Cars', 'details':'How healthy is your car?.\nTrace your car timeline from OEM to you.'},
-            {'id':2,'name':'Sell Car', 'details': 'Transfer your car ownership to another user.'},
-            {'id':3,'name':'View OEMs', 'details':'Know your OEM well before buying a car. Navigate their new products and buy direct from them.'}
-        ])
-    }
-})
-
 async function RegisterUser(res) {
     // build an in memory object with the network configuration (also known as a connection profile)
     const ccp = buildCCPOrg1();
@@ -383,6 +282,281 @@ async function RegisterUser(res) {
     }
 }
 
+
+async function SignInAdmin(req, res, username, password) {
+    const ccp = buildCCPOrg1();
+    
+    const gateway = new Gateway();
+
+    const wallet = await Wallets.newFileSystemWallet(walletPath);
+
+    try {
+        
+        await gateway.connect(ccp, {
+            wallet,
+            identity: org1UserId,
+            discovery: { enabled: true, asLocalhost: true } // using asLocalhost as this gateway is using a fabric network deployed locally
+        });
+
+        // Build a network instance based on the channel where the smart contract is deployed
+        const network = await gateway.getNetwork(channelName);
+
+        // Get the contract from the network.
+        const contract = network.getContract(chaincodeName);
+
+        console.log('\n--> Signing In admin user');
+        const result = await contract.submitTransaction('authenticateAdmin', username, password);
+        console.log('*** Admin Sign In committed');
+        
+        const resultJson = JSON.parse(result.toString())
+
+
+        if (resultJson.response === 'true') {
+            console.log(new Date()+" : Admin Login successfully")
+            req.session.type = "Admin"
+            res.sendFile(web+'admin/admin.htm', {root: __dirname})
+        }else {
+            res.send('Wrong username or password')
+            console.log(new Date()+" : Admin Login unsuccessfully")
+        }
+
+
+        
+    } catch (error){
+        console.error(error);
+    }
+}
+
+async function SignInOem(req, res) {
+    const ccp = buildCCPOrg1();
+    
+    const gateway = new Gateway();
+
+    const wallet = await Wallets.newFileSystemWallet(walletPath);
+
+    try {
+        
+        await gateway.connect(ccp, {
+            wallet,
+            identity: 'Oem_'+req.body.Username,
+            discovery: { enabled: true, asLocalhost: true } // using asLocalhost as this gateway is using a fabric network deployed locally
+        });
+
+
+        res.send("Success")
+
+        // Build a network instance based on the channel where the smart contract is deployed
+        // const network = await gateway.getNetwork(channelName);
+
+        // Get the contract from the network.
+        // const contract = network.getContract(chaincodeName);
+
+        // console.log('\n--> Signing In admin user');
+        // const result = await contract.submitTransaction('authenticateAdmin', username, password);
+        // console.log('*** Admin Sign In committed');
+        
+        // const resultJson = JSON.parse(result.toString())
+
+
+        // if (resultJson.response === 'true') {
+        //     console.log(new Date()+" : Admin Login successfully")
+        //     req.session.type = "Admin"
+        //     res.sendFile(web+'admin/admin.htm', {root: __dirname})
+        // }else {
+        //     res.send('Wrong username or password')
+        //     console.log(new Date()+" : Admin Login unsuccessfully")
+        // }
+
+
+        
+    } catch (error){
+        res.send('Wrong')
+        console.error(error);
+    }
+}
+
+async function RegisterOEM(req, res) {
+
+    const OemId = req.body.ID
+    const OemCounts = req.body.Counts
+    const OemWebsite = req.body.Website
+    const OemCountry = req.body.Country
+    const OemHq = req.body.HQ
+
+    // build an in memory object with the network configuration (also known as a connection profile)
+    const ccp = buildCCPOrg1();
+    
+    // build an instance of the fabric ca services client based on
+    // the information in the network configuration
+    const caClient = buildCAClient(FabricCAServices, ccp, 'ca.org1.example.com');
+
+    // setup the wallet to hold the credentials of the application user
+    const wallet = await buildWallet(Wallets, walletPath);
+
+    // in a real application this would be done only when a new user was required to be added
+    // and would be part of an administrative flow
+    await registerAndEnrollUser(caClient, wallet, mspOrg1, 'Oem_'+OemId, 'org1.department1');
+
+    // Create a new gateway instance for interacting with the fabric network.
+    // In a real application this would be done as the backend server session is setup for
+    // a user that has been verified.
+    const gateway = new Gateway();
+
+    try {
+        // setup the gateway instance
+        // The user will now be able to create connections to the fabric network and be able to
+        // submit transactions and query. All transactions submitted by this gateway will be
+        // signed by this user using the credentials stored in the wallet.
+        await gateway.connect(ccp, {
+            wallet,
+            identity: 'Oem_'+OemId,
+            discovery: { enabled: true, asLocalhost: true } // using asLocalhost as this gateway is using a fabric network deployed locally
+        });
+
+        // Build a network instance based on the channel where the smart contract is deployed
+        const network = await gateway.getNetwork(channelName);
+
+        // Get the contract from the network.
+        const contract = network.getContract(chaincodeName);
+
+        console.log('\n--> Submit Transaction: Adding OEM data to the ledger...');
+        const result = await contract.evaluateTransaction('addOemData',OemId, OemCounts.toString(), OemWebsite, OemCountry, OemHq, new Date());
+        console.log('*** Result: committed');
+        
+        if (result.toString() === "Done") {
+            res.send('<script>alert("'+OemId+' was registered successfully"); window.history.back();</script>')
+        }
+
+    } finally {
+
+    }
+}
+
+
+async function RegisterTransporter(req, res) {
+
+    const TransId = req.body.ID
+    const TransWebsite = req.body.Website
+    const TransCountry = req.body.Country
+    const TransHq = req.body.HQ
+
+    // build an in memory object with the network configuration (also known as a connection profile)
+    const ccp = buildCCPOrg1();
+    
+    // build an instance of the fabric ca services client based on
+    // the information in the network configuration
+    const caClient = buildCAClient(FabricCAServices, ccp, 'ca.org1.example.com');
+
+    // setup the wallet to hold the credentials of the application user
+    const wallet = await buildWallet(Wallets, walletPath);
+
+    // in a real application this would be done only when a new user was required to be added
+    // and would be part of an administrative flow
+    await registerAndEnrollUser(caClient, wallet, mspOrg1, 'Trans_'+TransId, 'org1.department1');
+
+    // Create a new gateway instance for interacting with the fabric network.
+    // In a real application this would be done as the backend server session is setup for
+    // a user that has been verified.
+    const gateway = new Gateway();
+
+    try {
+        // setup the gateway instance
+        // The user will now be able to create connections to the fabric network and be able to
+        // submit transactions and query. All transactions submitted by this gateway will be
+        // signed by this user using the credentials stored in the wallet.
+        await gateway.connect(ccp, {
+            wallet,
+            identity: 'Trans_'+TransId,
+            discovery: { enabled: true, asLocalhost: true } // using asLocalhost as this gateway is using a fabric network deployed locally
+        });
+
+        // Build a network instance based on the channel where the smart contract is deployed
+        const network = await gateway.getNetwork(channelName);
+
+        // Get the contract from the network.
+        const contract = network.getContract(chaincodeName);
+
+        console.log('\n--> Submit Transaction: Adding Transporter data to the ledger...');
+        const result = await contract.evaluateTransaction('addTransData',TransId, TransWebsite, TransCountry, TransHq, new Date());
+        console.log('*** Result: committed');
+        
+        if (result.toString() === "Done") {
+            res.send('<script>alert("'+TransId+' was registered successfully"); window.history.back();</script>')
+        } else {
+            res.send('error')
+        }
+
+    } finally {
+
+    }
+}
+
+var express = require('express')
+var session = require('express-session')
+
+var app = express();
+
+var web = '/web/';
+
+// Mount assets
+app.use(express.static('web/'));
+
+// Decode url
+app.use(express.urlencoded());
+
+// For handling sessions
+app.use(session({
+    secret: 'car-key',
+    resave: false,
+    saveUninitialized: false,
+}))
+
+app.set('json spaces', 40);
+
+
+app.get('/', function(req, res){
+    if (!req.session.type) {
+        if (!req.session.username) {
+            res.sendFile(web+'index.htm',{root: __dirname});
+        } else {
+            res.sendFile(web+'owners/index.htm', {root: __dirname})
+        }
+    } else if (req.session.type === 'Admin') {
+        res.sendFile(web+'admin/admin.htm', {root: __dirname})
+    }
+});
+
+app.post('/sign-up', function(req, res, next) {
+    if (!req.session.username) {
+        req.session.username = 'lusajo'
+        res.sendFile(web+'owners/index.htm', {root: __dirname})
+    } else {
+        res.sendFile(web+'owners/index.htm', {root: __dirname})
+    }
+})
+
+app.get('/sign-in', function(req, res, next) {
+    res.sendFile(web+'sign-in.htm', {root: __dirname})
+})
+
+app.get('/head', function(req, res) {
+    res.json({'name':'lusajo menard'});
+})
+
+app.get('/services_carOwner', function(req, res){
+    if (!req.session.username) {
+        res.sendFile(web+'index.htm',{root: __dirname});
+    } else {
+        res.json([
+            {'id':1,'name':'View My Cars', 'details':'How healthy is your car?.\nTrace your car timeline from OEM to you.'},
+            {'id':2,'name':'Sell Car', 'details': 'Transfer your car ownership to another user.'},
+            {'id':3,'name':'View OEMs', 'details':'Know your OEM well before buying a car. Navigate their new products and buy direct from them.'}
+        ])
+    }
+})
+
+
+
 app.get('/register-user', function(req, res){
     // if (!req.session.username) {
     //     res.sendFile(web+'index.htm',{root: __dirname});
@@ -392,14 +566,32 @@ app.get('/register-user', function(req, res){
     RegisterUser(res)
 })
 
-app.post('/sign-inAdmin', function(req, res){
+
+app.post('/sign-inAction', function(req, res){
     console.log(req.body)
     if (req.body.type === 'Admin')
-        SignInAdmin(res, req.body.Username, req.body.Password)
+        SignInAdmin(req, res, req.body.Username, req.body.Password)
+    else if (req.body.type === 'CarOwner')
+        res.send(req.body)
+    else if (req.body.type === 'Oem')
+        SignInOem(req, res)
     else
-        res.send('No user sign in yet')
-        
+        res.send('Failed')
+            
 }) 
+
+app.post('/register-oem', function(req, res) {
+    RegisterOEM(req, res)
+})
+
+app.post('/register-transporter', function(req, res){
+    RegisterTransporter(req, res)
+})
+
+app.get('/admin-signout', function(req, res) {
+    req.session.destroy()
+    res.sendFile(web+'index.htm',{root: __dirname})
+})
 
 app.listen(5000, function() {
     console.log("Server is listening...");

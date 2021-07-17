@@ -73,7 +73,7 @@
                             <h5 style="color: white; float: right; margin-top: 1em;">Better Quality with transparency</h5>
                         </div>
                         <div class="col-md-6" style="background-color: teal;">
-                            <form method="POST" action="/sign-inAdmin" class="needs-validation">
+                            <form method="POST" action="/sign-inAction" class="needs-validation">
                                 <h4 class="text-center">Sign In</h4>
                                 <div class="input-group input">
                                     <div class="input-group-prepend">
@@ -91,17 +91,32 @@
                                 <h6 style="color: white; font-weight: bold;">Sign In As</h6>
 
                                 <div class="row" style="width: 80%;">
+                                    
+                                    <div class="col">
+                                        <div class="custom-radio custom-control custom-control-inline">
+                                            <input type="radio" value="Transporter" name="type" id="trans" class="custom-radio">
+                                            <label for="trans" class="custom-control-label">Transporter</label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="custom-radio custom-control custom-control-inline">
+                                            <input type="radio" value="Oem" name="type" id="trans" class="custom-radio">
+                                            <label for="trans" class="custom-control-label">OEM</label>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="row" style="width: 80%;">
                                     <div class="col">
                                         <div class="custom-radio custom-control custom-control-inline">
                                             <input type="radio" value="Admin" name="type" id="owner" class="custom-radio">
                                             <label for="owner" class="custom-control-label">Admin</label>
                                         </div>
-                                        
                                     </div>
                                     <div class="col">
                                         <div class="custom-radio custom-control custom-control-inline">
-                                            <input type="radio" value="User" name="type" id="trans" class="custom-radio" checked>
-                                            <label for="trans" class="custom-control-label">User</label>
+                                            <input type="radio" value="CarOwner" name="type" id="trans" class="custom-radio" checked>
+                                            <label for="trans" class="custom-control-label">Car owner</label>
                                         </div>
                                     </div>
                                 </div>
