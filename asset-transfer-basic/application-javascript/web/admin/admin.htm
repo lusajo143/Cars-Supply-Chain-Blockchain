@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="./style.css">
+
+    <style>
+        .center {
+            margin-top: 7em;
+            height: 400px;
+        }
+        .options {
+            background-color: teal;
+            color: white;
+            font-weight: bold;
+            width: 90%;
+            margin-top: 5px;
+        }
+        #content {
+            padding: 10px;
+        }
+        form {
+            text-align: left;
+            font-weight: bold;
+        }
+        .group {
+            margin-top: 10px;
+        }
+        
+    </style>
+
+</head>
+<body>
+   <div class="container-fluid">
+       <div class="row">
+           <div class="col-md-12 fixed-top top">
+                <div class="navbar navbar-extended-lg">
+                    <div class="navbar-brand">
+                        Cars Supply Chain
+                    </div>
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <div style="margin-top: 10px;">
+                                <i class="bi-person-fill top-icon-right"></i><span>Admin Panel</span>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/admin-signout" class="nav-link btn sign-out-btn">Sign Out</a>
+                        </li>
+                    </ul>
+                </div>
+           </div>
+       </div>
+
+       <div class="row">
+           <center>
+               <div class="col-md-4 center">
+                   <div class="row">
+                       <div class="col-md-6" id="OEM">
+                           <span class="btn options" onclick="oem()">OEM</span>
+                       </div>
+                       <div class="col-md-6" id="Transporter">
+                           <span class="btn options" onclick="transporter()">Transporter</span>
+                       </div>
+                   </div>
+                   <div class="row">
+                       <div class="col" id="content">
+                        
+                        <h3 class="h4-plainSmall">Register OEM</h3>
+                        <form method="POST" action="/register-oem" class="needs-validation form">
+                            <div class="form-group group">
+                                <label for="ID">ID / Name</label>
+                                <input type="text" name="ID" id="ID" class="form-control" required placeholder="Enter ID or Name of OEM">
+                                <div class="form-text">ID or Name must be unique for all OEMs</div>
+                            </div>
+                            <div class="form-group group">
+                                <label for="Counts">Number of Cars</label>
+                                <input type="text" name="Counts" id="Counts" class="form-control" required placeholder="Enter Number of Cars">
+                            </div>
+                            <div class="form-group group">
+                                <label for="Website">Website</label>
+                                <input type="text" name="Website" id="Website" class="form-control" required placeholder="Enter official website">
+                            </div>
+                            <div class="form-group group">
+                                <label for="Country">Country</label>
+                                <input type="text" name="Country" id="Country" class="form-control" required placeholder="Enter Country">
+                            </div>
+                            <div class="form-group group">
+                                <label for="HQ">City</label>
+                                <input type="text" name="HQ" id="HQ" class="form-control" required placeholder="Enter City">
+                            </div>
+                            <button class="btn" style="background-color: teal; color: white; font-weight: bold; margin-bottom: 1em; margin-top: 1em; width: 100%;">Register</button>
+                        </form>
+
+                       </div>
+                   </div>
+               </div>
+           </center>
+       </div>
+
+   </div>
+
+   <script>
+
+        var content = document.getElementById('content')
+
+       function transporter() {
+           content.innerHTML = '<h3 class="h4-plainSmall">Register Transporter</h3><form method="POST" action="/register-transporter" class="needs-validation form"><div class="form-group group"><label for="ID">ID / Name</label><input type="text" name="ID" id="ID" class="form-control" required placeholder="Enter ID or Name of OEM"><div class="form-text">ID or Name must be unique for all OEMs</div></div><div class="form-group group"><label for="Website">Website</label><input type="text" name="Website" id="Website" class="form-control" required placeholder="Enter official website"></div><div class="form-group group"><label for="Country">Country</label><input type="text" name="Country" id="Country" class="form-control" required placeholder="Enter Country"></div><div class="form-group group"><label for="HQ">City</label><input type="text" name="HQ" id="HQ" class="form-control" required placeholder="Enter City"></div><button class="btn" style="background-color: teal; color: white; font-weight: bold; margin-bottom: 1em; margin-top: 1em; width: 100%;">Register</button></form>'
+       }
+
+       function oem() {
+           content.innerHTML = '<h3 class="h4-plainSmall">Register OEM</h3><form method="POST" action="/register-oem" class="needs-validation form"><div class="form-group group"><label for="ID">ID / Name</label><input type="text" name="ID" id="ID" class="form-control" required placeholder="Enter ID or Name of OEM"><div class="form-text">ID or Name must be unique for all OEMs</div></div><div class="form-group group"><label for="Counts">Number of Cars</label><input type="text" name="Counts" id="Counts" class="form-control" required placeholder="Enter Number of Cars"></div><div class="form-group group"><label for="Website">Website</label><input type="text" name="Website" id="Website" class="form-control" required placeholder="Enter official website"></div><div class="form-group group"><label for="Country">Country</label><input type="text" name="Country" id="Country" class="form-control" required placeholder="Enter Country"></div><div class="form-group group"><label for="HQ">City</label><input type="text" name="HQ" id="HQ" class="form-control" required placeholder="Enter City"></div><button class="btn" style="background-color: teal; color: white; font-weight: bold; margin-bottom: 1em; margin-top: 1em; width: 100%;">Register</button></form>'
+       }
+   </script>
+
+</body>
+</html>
