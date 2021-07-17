@@ -24,6 +24,32 @@ exports.buildCAClient = (FabricCAServices, ccp, caHostName) => {
 	return caClient;
 };
 
+// exports.enrollAdmin = async (caClient, wallet, orgMspId) => {
+// 	try {
+// 		// Check to see if we've already enrolled the admin user.
+// 		const identity = await wallet.get(adminUserId);
+// 		if (identity) {
+// 			console.log('An identity for the admin user already exists in the wallet');
+// 			return;
+// 		}
+
+// 		// Enroll the admin user, and import the new identity into the wallet.
+// 		const enrollment = await caClient.enroll({ enrollmentID: adminUserId, enrollmentSecret: adminUserPasswd });
+// 		const x509Identity = {
+// 			credentials: {
+// 				certificate: enrollment.certificate,
+// 				privateKey: enrollment.key.toBytes(),
+// 			},
+// 			mspId: orgMspId,
+// 			type: 'X.509',
+// 		};
+// 		await wallet.put(adminUserId, x509Identity);
+// 		console.log('Successfully enrolled admin user and imported it into the wallet');
+// 	} catch (error) {
+// 		console.error(`Failed to enroll admin user : ${error}`);
+// 	}
+// };
+
 exports.enrollAdmin = async (caClient, wallet, orgMspId) => {
 	try {
 		// Check to see if we've already enrolled the admin user.

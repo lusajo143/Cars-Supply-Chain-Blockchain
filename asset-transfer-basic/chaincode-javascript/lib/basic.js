@@ -151,17 +151,56 @@ class basic extends Contract {
     }
 
     async authenticateAdmin(ctx, username, password) {
-        const _data = ctx.stub.getState('admin')
+        const _data = await ctx.stub.getState('admin')
 
         if (!_data || _data.length === 0) {
             throw new Error("Failed to authenticate admin")
         }
 
-        if (_data.Username === username && _data.Password === password)
-            return "true"
-        else
-            return "false"
+        const _dataJson = JSON.parse(_data.toString())
+
+        if (_dataJson.Username === username && _dataJson.Password === password) {
+            const _result = {
+                response: 'true'
+            }
+            return JSON.stringify(_result)
+        }
+        else {
+            const _result = {
+                response: 'false'
+            }
+            return JSON.stringify(_result)
+        }
         
+    }
+
+    async addOemData(ctx, id, counts, website, country, hq, date) {
+        const _data = {
+            ID: id,
+            Counts: counts,
+            Website: website,
+            Country: country,
+            HQ: hq,
+            Date: date
+        }
+
+        await ctx.stub.putState(id, Buffer.from(JSON.stringify(_data)))
+
+        return "Done"
+    }
+
+    async addTransData(ctx, id, country, website, hq, date) {
+        const _data = {
+            ID: id,
+            Country: country,
+            Website: website,
+            HQ: hq,
+            Date: date
+        }
+
+        await ctx.stub.putState(id, Buffer.from(JSON.stringify(_data)))
+
+        return "Done"
     }
 
     async addCar(ctx, id, oem, model, year, status, country) {
