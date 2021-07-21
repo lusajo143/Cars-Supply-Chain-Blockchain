@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OEM</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="./style.css">
+
+    <style>
+        .group {
+            font-weight: bold;
+            text-align: left;
+            margin-top: 1em;
+        }
+        .sub {
+            background-color: teal;
+            color: white;
+            margin-top: 1em;
+            font-weight: bold;
+            width: 70%;
+            border-radius: 100px;
+        }
+        .sub:hover {
+            background-color: rgb(0, 80, 80);
+            color: white;
+        }
+        .get {
+            font-weight: bold;
+            font-size: 50px;
+            margin-top: 3em;
+            color: white;
+        }
+        .span {
+            color: white;
+            font-size: 25px;
+            font-weight: bold;
+        }
+        .get-car {
+            height: 550px; 
+            margin-top: 5em;
+            background-image: url('../assets/car2.jpg');
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    </style>
+
+</head>
+<body>
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 fixed-top top">
+                 <div class="navbar navbar-extended-lg">
+                     <div class="navbar-brand">
+                         Cars Supply Chain
+                     </div>
+                     <ul class="nav">
+                         <li class="nav-item">
+                             <div style="margin-top: 10px;">
+                                 <i class="bi-person-fill top-icon-right"></i><span id="title">Loading...</span>
+                             </div>
+                         </li>
+                         <li class="nav-item">
+                             <a href="/admin-signout" class="nav-link btn sign-out-btn">Sign Out</a>
+                         </li>
+                     </ul>
+                 </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 5em;">
+            <center>
+                <div class="col-md-5">
+                    <h5>Add a Car</h5>
+
+                    <form method="POST" action="/add-car">
+                        <div class="form-group group" >
+                            <label for="id">Car ID</label>
+                            <input type="text" name="id" id="id" class="form-control" placeholder="Enter ID">
+                            <span class="form-text">Car ID must be unique for every Car</span>
+                        </div>
+                        <div class="form-group group" >
+                            <label for="model">Model</label>
+                            <input type="text" name="model" id="model" class="form-control" placeholder="Enter model">
+                        </div>
+                        <div class="form-group group">
+                            <label for="year">Year</label>
+                            <input type="text" name="year" id="year" class="form-control" placeholder="Enter Year">
+                        </div>
+                        <div class="form-group group">
+                            <label for="status">Status</label>
+                            <select name="status" id="status" class="form-control">
+                                <option value="Not Owned">Not Owned</option>
+                                <option value="Owned">Owned</option>
+                            </select>
+                            <span class="form-text">Select the status of a Car if Owned or not.</span>
+                        </div>
+                        <div class="form-group group">
+                            <label for="country">Country</label>
+                            <input type="text" name="country" id="country" class="form-control" placeholder="Enter Country">
+                            <span class="form-text">Enter a country where a car is currently located</span>
+                        </div>
+                        
+                        <input type="submit" value="Add" class="btn sub">
+
+                    </form>
+                    <button onclick="print()">Print</button>
+                </div>
+            </center>
+        </div>
+
+        <div class="row">
+            <div class="col get-car">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="get">Get Car details</h5>
+                        <span class="span">By using car id, get the current details of a Car.</span>
+                    </div>
+                    <div class="col-md-6">
+                        <form action="/get-car" method="POST">
+                            <div class="form-group group">
+                                <label style="margin-top: 4em; color: white; font-weight: bold;" for="ID">Car ID</label>
+                                <input type="text" name="ID" id="ID" class="form-control" placeholder="Enter Car ID" style="height: 50px;">
+                            </div>
+
+                            <input type="submit" value="Get" class="btn" style="height: 50px; background-color: teal; margin-top: 1em; color: white; font-weight: bold; width: 100px;">
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script>
+
+        var title = document.querySelector('#title')
+        var carID = document.querySelector('#Id')
+
+        var resp = 'response'
+
+        fetch(
+            'http://127.0.0.1:5000'
+        ).then(
+            resp => resp.json()
+        ).then(
+            data => title.innerHTML = data.Name
+        )
+
+        async function postData(url = '', data = {}) {
+        // Default options are marked with *
+        const response = await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        });
+        return response.json(); // parses JSON response into native JavaScript objects
+        }
+
+        function print(){
+            console.log(resp)
+        }
+    </script>
+
+</body>
+</html>

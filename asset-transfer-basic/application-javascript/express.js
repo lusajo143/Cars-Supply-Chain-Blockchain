@@ -343,34 +343,130 @@ async function SignInOem(req, res) {
         });
 
 
-        res.send("Success")
-
-        // Build a network instance based on the channel where the smart contract is deployed
-        // const network = await gateway.getNetwork(channelName);
-
-        // Get the contract from the network.
-        // const contract = network.getContract(chaincodeName);
-
-        // console.log('\n--> Signing In admin user');
-        // const result = await contract.submitTransaction('authenticateAdmin', username, password);
-        // console.log('*** Admin Sign In committed');
-        
-        // const resultJson = JSON.parse(result.toString())
-
-
-        // if (resultJson.response === 'true') {
-        //     console.log(new Date()+" : Admin Login successfully")
-        //     req.session.type = "Admin"
-        //     res.sendFile(web+'admin/admin.htm', {root: __dirname})
-        // }else {
-        //     res.send('Wrong username or password')
-        //     console.log(new Date()+" : Admin Login unsuccessfully")
-        // }
+        req.session.username = req.body.Username
+        req.session.type = 'OEM'
+        res.sendFile(web+'oem/oem.htm', {root:__dirname})
 
 
         
     } catch (error){
         res.send('Wrong')
+        console.error(error);
+    }
+}
+
+async function SignInTransporter(req, res) {
+    const ccp = buildCCPOrg1();
+    
+    const gateway = new Gateway();
+
+    const wallet = await Wallets.newFileSystemWallet(walletPath);
+
+    try {
+        
+        await gateway.connect(ccp, {
+            wallet,
+            identity: 'Trans_'+req.body.Username,
+            discovery: { enabled: true, asLocalhost: true } // using asLocalhost as this gateway is using a fabric network deployed locally
+        });
+
+
+        res.send("Success")
+
+        
+    } catch (error){
+        res.send('Wrong')
+        console.error(error);
+    }
+}
+
+async function addCar(req, res) {
+
+    const id = req.body.id
+    const year = req.body.year
+    const model = req.body.model
+    const oem = req.session.username
+    const status = req.body.status
+    const country = req.body.country
+
+    const ccp = buildCCPOrg1();
+    
+    const gateway = new Gateway();
+
+    const wallet = await Wallets.newFileSystemWallet(walletPath);
+
+    try {
+        
+        await gateway.connect(ccp, {
+            wallet,
+            identity: 'Oem_'+req.session.username,
+            discovery: { enabled: true, asLocalhost: true } // using asLocalhost as this gateway is using a fabric network deployed locally
+        });
+
+        // Build a network instance based on the channel where the smart contract is deployed
+        const network = await gateway.getNetwork(channelName);
+
+        // Get the contract from the network.
+        const contract = network.getContract(chaincodeName);
+
+        console.log('\n--> Adding a Car');
+        const result = await contract.submitTransaction('addCar', id, oem, model, year, status, country);
+        console.log('*** Result: committed');
+        
+        res.send('<script>alert("'+model+' was added successfully"); window.history.back();</script>')
+
+        // res.writeHead(200, {'Content-Type':'application/json'})
+        // res.write(result.toString());
+        // res.end();
+        
+    } catch (error){
+        console.error(error);
+    }
+}
+
+async function getCar(req, res) {
+    const id = req.body.ID
+
+    console.log('alalala    '+ id)
+
+    const ccp = buildCCPOrg1();
+    
+    const gateway = new Gateway();
+
+    const wallet = await Wallets.newFileSystemWallet(walletPath);
+
+    try {
+        
+        await gateway.connect(ccp, {
+            wallet,
+            identity: 'Oem_'+req.session.username,
+            discovery: { enabled: true, asLocalhost: true } // using asLocalhost as this gateway is using a fabric network deployed locally
+        });
+
+        // Build a network instance based on the channel where the smart contract is deployed
+        const network = await gateway.getNetwork(channelName);
+
+        // Get the contract from the network.
+        const contract = network.getContract(chaincodeName);
+
+        console.log('\n--> Get Car');
+        const result = await contract.submitTransaction('getCar', id);
+
+        const resultJson = JSON.parse(result.toString())
+
+        console.log('*** Result: committed');
+        console.log(resultJson.toString())
+        // console.log(result.toString())
+        
+        res.json(resultJson)
+
+        // res.send('<script>alert("'+model+' was added successfully"); window.history.back();</script>')
+
+        // res.writeHead(200, {'Content-Type':'application/json'})
+        // res.write(result.toString());
+        // res.end();
+        
+    } catch (error){
         console.error(error);
     }
 }
@@ -492,7 +588,8 @@ async function RegisterTransporter(req, res) {
 }
 
 var express = require('express')
-var session = require('express-session')
+var session = require('express-session');
+const { send } = require('process');
 
 var app = express();
 
@@ -523,6 +620,8 @@ app.get('/', function(req, res){
         }
     } else if (req.session.type === 'Admin') {
         res.sendFile(web+'admin/admin.htm', {root: __dirname})
+    } else if (req.session.type === 'OEM') {
+        res.sendFile(web+'oem/oem.htm', {root:__dirname})
     }
 });
 
@@ -537,6 +636,10 @@ app.post('/sign-up', function(req, res, next) {
 
 app.get('/sign-in', function(req, res, next) {
     res.sendFile(web+'sign-in.htm', {root: __dirname})
+})
+
+app.get('/sign-in-admin', function(req, res, next) {
+    res.sendFile(web+'sign-in-admin.htm', {root: __dirname})
 })
 
 app.get('/head', function(req, res) {
@@ -558,11 +661,6 @@ app.get('/services_carOwner', function(req, res){
 
 
 app.get('/register-user', function(req, res){
-    // if (!req.session.username) {
-    //     res.sendFile(web+'index.htm',{root: __dirname});
-    // } else {
-    //     RegisterUser()
-    // }
     RegisterUser(res)
 })
 
@@ -572,13 +670,39 @@ app.post('/sign-inAction', function(req, res){
     if (req.body.type === 'Admin')
         SignInAdmin(req, res, req.body.Username, req.body.Password)
     else if (req.body.type === 'CarOwner')
-        res.send(req.body)
+        res.sendFile(req.body)
     else if (req.body.type === 'Oem')
         SignInOem(req, res)
+    else if (req.body.type === 'Transporter')
+        SignInTransporter(req, res)
     else
         res.send('Failed')
-            
 }) 
+
+app.get('/user-data', function(req, res){
+    if (!req.session.username) {
+        res.sendFile(web+'index.htm',{root: __dirname});
+    } else {
+        res.json({'Name':req.session.username})
+    }
+})
+
+app.post('/add-car', function(req, res){
+    if (req.session.type === 'OEM') {
+        addCar(req, res)
+    } else {
+        res.sendFile(web+'index.htm',{root: __dirname});
+    }
+})
+
+app.post('/get-car', function(req, res){
+    if (req.session.type === 'OEM') {
+        // getCar(req, res)
+        res.send('<script>window.history.back(); var resp = "HELLO";</script>')
+    } else {
+        res.json({response: 'No permission'})
+    }
+})
 
 app.post('/register-oem', function(req, res) {
     RegisterOEM(req, res)

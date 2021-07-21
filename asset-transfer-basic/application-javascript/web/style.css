@@ -132,3 +132,8 @@ body {
     color: white;
     background-color: rgb(161, 1, 1);
 }
+
+h5 {
+    font-size: 30px;
+    font-weight: bold;
+}
